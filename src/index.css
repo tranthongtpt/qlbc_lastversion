@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* .App {
+    text-align: center;
+  } */
+  
+  /*======================
+      404 page
+  =======================*/
+  .page_404{
+    @apply bg-white h-screen max-w-full;
+  }
+  .four_zero_four_bg{
+    @apply bg-center min-h-screen bg-cover inline-block align-middle  bg-contain bg-no-repeat;
+  }
+  
+  .four_zero_four_bg_h1{
+    @apply text-[80px]
+  } 
+  .four_zero_four_bg_h3{
+    @apply text-[80px]
+  }
+  .contant_box_404{
+    @apply -mt-12
+  }
+
+  .emoji-404 {
+    position: relative;
+  }
+}
