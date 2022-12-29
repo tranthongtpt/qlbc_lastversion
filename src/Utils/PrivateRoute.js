@@ -5,7 +5,7 @@ import { getToken } from './Common';
 // handle the public routes
 const PrivateRouter = () => {
   return (
-    getToken() ? <Outlet/> : <Navigate to="/login"/>
+    getToken() ? <Outlet/> : <Navigate to="/dang-nhap"/>
   )
 }
  

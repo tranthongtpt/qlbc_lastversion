@@ -5,5 +5,7 @@ export { default as Navbar } from "./Navbar";
 export { default as ToolBar } from "./ToolBar";
 export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
+export { default as DocumentTitle } from "./DocumentTitle";
 export { default as NavigationScroll } from "./NavigationScroll";
-export { default as useTable } from "./useTable";
+export { default as Layout } from "./Layout";
+export { default as NoRowsOverlay } from "./NoRowsOverlay";

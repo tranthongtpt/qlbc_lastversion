@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from '@material-ui/core/Button'
+import { DocumentTitle } from "../components";
 function Page_404() {
-
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate('/danh-sach-nguoi-dung')
+    }
     return (
-        <div>
+        <>
+            <DocumentTitle title='Trang không tồn tại'/>
             <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
                 <h1 className="text-9xl font-extrabold text-white tracking-widest">404</h1>
                 <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute mt-[-120px]">
@@ -20,14 +26,13 @@ function Page_404() {
                             className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"
                         ></span>
 
-                        <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
-
-                            <Link to="/bangdieukhien">Quay trở lại</Link>
+                        <span className="relative block px-8 py-3 bg-[#fff] border border-current">
+                            <Button onClick={handleBack}>Quay trở lại</Button>
                         </span>
                     </a>
                 </button>
             </div>
-        </div>
+        </>
     );
 }
 

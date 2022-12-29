@@ -5,7 +5,7 @@ import { getToken } from './Common';
 // handle the public routes
 const PublicRoutes = () => {
   return (
-    !getToken() ? <Outlet/> : <Navigate to="/bangdieukhien"/>
+    !getToken() ? <Outlet/> : <Navigate to="/danh-sach-nguoi-dung"/>
   )
 }
  

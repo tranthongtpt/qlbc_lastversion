@@ -6,10 +6,29 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useNavigate, NavLink } from "react-router-dom";
 import adminApi from "../api/adminApi";
 import { useStateContext } from "../contexts/ContextProvider";
-import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText, IconButton } from "@mui/material";
+import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText, IconButton } from "@material-ui/core";
+import { withStyles } from '@material-ui/core/styles';
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
 
 const Navbar = () => {
-  const [users, setUsers] = useState({});
   const {
     currentColor,
     activeMenu,
@@ -37,13 +56,12 @@ const Navbar = () => {
       setActiveMenu(true);
     }
   }, [screenSize]);
-
+  const [users, setUsers] = useState({});
   const fetchData = async () => {
     try {
       const res = await adminApi.getUsers();
-      console.log('Fetch products successfully: ', res);
       if (res != null) {
-        setUsers(res.data?.result)
+        setUsers(res?.data?.result)
       }
     } catch (error) {
       let statusText = "get lỗi rồi ahihi "
@@ -61,12 +79,12 @@ const Navbar = () => {
   }, [])
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
   // ----------------------
-  const url = 'http://10.220.5.65:8090/api/v1/media/view/'
+  const url = `${process.env.REACT_APP_URL}/api/v1/media/view/`;
 
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login")
+    navigate("/dang-nhap")
   }
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -101,9 +119,9 @@ const Navbar = () => {
             alt="user-profile"
           />}
         >
-          hi, {users.givenName}
+          hi,Admin
         </Button>
-        <Menu
+        <StyledMenu
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
@@ -112,7 +130,7 @@ const Navbar = () => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={() => (navigate("/userprofile"))}>
+          <MenuItem onClick={() => (navigate("/danh-sach-nguoi-dung"))}>
             <ListItemIcon>
               <CgProfile fontSize="large" />
             </ListItemIcon>
@@ -129,7 +147,7 @@ const Navbar = () => {
             <MdLogout fontSize="large" />
           </ListItemIcon>
             <ListItemText>Đăng xuất</ListItemText></MenuItem>
-        </Menu>
+        </StyledMenu>
       </div>
     </div>
   );

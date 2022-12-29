@@ -4,7 +4,7 @@ import { stringify } from "qs";
 import { getToken } from '../Utils/Common';
 
 const axiosClient = axios.create({
-    baseURL: "http://10.220.5.65:8090/api/v1",
+    baseURL: `${process.env.REACT_APP_URL}/api/v1`,
     headers: {
         'Authorization': `Bearer ${getToken()}`,
         'content-type': 'application/json',

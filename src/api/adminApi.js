@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
 const userApi = {
     getListReporter: async (params) =>{
-        const url = `/admin/manager-user?page=${params?.page}&size=${params?.size}`;
-        return await axiosClient.post(url,{params})
+        const url = `/admin/manager-user`;
+        return await axiosClient.get(url,{params})
     },
     getUser: async (params) =>{
         const url = '/user/data-spokesman';
@@ -21,8 +21,8 @@ const userApi = {
         return await axiosClient.get(url,{params})
     },
     getListUnitsCQNN: async (params) =>{
-        const url = `/admin/manager-institute?page=${params?.page}&size=${params?.size}`;
-        return await axiosClient.post(url,{params})
+        const url = `/admin/manager-institute`;
+        return await axiosClient.get(url,{params})
     },
     getListUnitsNPN: async () =>{
         const url = '/pub/data-unit';

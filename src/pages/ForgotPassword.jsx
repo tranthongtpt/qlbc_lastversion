@@ -2,37 +2,44 @@ import Illustration from "../data/Illustration.png"
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-
-import { useForm } from "../components/Form/useForm";
-import { Typography, Button, TextField, IconButton, InputAdornment } from "@mui/material";
+import { Typography, Button, TextField, IconButton, InputAdornment } from "@material-ui/core";
 import axios from 'axios';
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-export default function EnterMail() {
-    const [inputs, setInputs] = useState({});
-    const navigate = useNavigate();
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { withStyles } from '@material-ui/core/styles';
+import { deepPurple, purple } from '@material-ui/core/colors';
+import { DocumentTitle } from "../components";
 
+export default function EnterMail() {
+    const ColorButton = withStyles((theme) => ({
+        root: {
+            color: theme.palette.getContrastText(deepPurple[500]),
+            backgroundColor: purple[500],
+            '&:hover': {
+                backgroundColor: purple[700],
+            },
+        },
+    }))(Button);
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
-    // const handleChange = (e) => {
-    //     const name = e.target.name;
-    //     const value = e.target.value;
-    //     setInputs(values => ({...values, [name]: value}))
-    // }
+    const [inputValues, setInputValues] = useState({})
+    const handleOnChange = (e) => {
+        setInputValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const data = JSON.stringify({
-            "email": values.email,
-            "password": values.password
+            "email": inputValues.email,
+            "password": inputValues.password
         });
 
         const config = {
             method: 'post',
-            url: 'http://10.220.5.65:8090/api/v1/province/login',
+            url: `${process.env.REACT_APP_URL}/api/v1/province/login`,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -43,43 +50,20 @@ export default function EnterMail() {
             .then(response => {
                 if (response.data.success === true || 'accessToken' in response) {
                     localStorage.setItem('token', response.data.result.token);
-                    navigate('/bangdieukhien');
+                    navigate('/danh-sach-nguoi-dung');
                 } else {
 
                 }
-                console.log(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
 
     }
-    // ttttttttttttttttttttest
-    const initialFValues = {
-        email: '',
-        password: ''
-    }
-    const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-        if ('email' in fieldValues)
-            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-        setErrors({
-            ...temp
-        })
-
-        if (fieldValues == values)
-            return Object.values(temp).every(x => x == "")
-    }
-    const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-    } = useForm(initialFValues, true, validate);
+   
     return (
         <section className="relative w-full h-screen flex bg-blue-200">
+            <DocumentTitle title="Quên mật khẩu"/>
             <div className="relative w-6/12 h-full">
                 <img src={Illustration} className="absolute top-0 left-0 w-full h-full object-scale-down" />
             </div>
@@ -104,10 +88,8 @@ export default function EnterMail() {
                                 fullWidth
                                 name="usersName"
                                 label="Nhập tài khoản"
-                                value={values.usersName}
-                                onChange={handleInputChange}
-                                error={errors.usersName}
-                                sx={{ marginTop: '10px' }}
+                                onChange={handleOnChange}
+                                style={{ marginTop: '10px' }}
                             />
                             <div>
                                 <div className="flex justify-between mb-2">
@@ -120,9 +102,7 @@ export default function EnterMail() {
                                         name="password"
                                         label="Nhập mật khẩu cũ"
                                         type={showPassword ? "text" : "password"}
-                                        value={values.password}
-                                        onChange={handleInputChange}
-                                        error={errors.password}
+                                        onChange={handleOnChange}
                                         InputProps={{ // <-- This is where the toggle button is added.
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -136,7 +116,7 @@ export default function EnterMail() {
                                                 </InputAdornment>
                                             )
                                         }}
-                                        sx={{ marginTop: '0px' }}
+                                        style={{ marginTop: '0px' }}
                                     />
                                 </div>
                                 <div className="flex justify-between mb-2">
@@ -149,9 +129,7 @@ export default function EnterMail() {
                                         name="password"
                                         label="Nhập mật khẩu mới"
                                         type={showPassword ? "text" : "password"}
-                                        value={values.password}
-                                        onChange={handleInputChange}
-                                        error={errors.password}
+                                        onChange={handleOnChange}
                                         InputProps={{ // <-- This is where the toggle button is added.
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -165,7 +143,7 @@ export default function EnterMail() {
                                                 </InputAdornment>
                                             )
                                         }}
-                                        sx={{ marginTop: '0px' }}
+                                        style={{ marginTop: '0px' }}
                                     />
                                 </div>
                                 <div className="flex justify-between mb-2">
@@ -178,9 +156,7 @@ export default function EnterMail() {
                                         name="password"
                                         label="Nhập mật khẩu mới"
                                         type={showPassword ? "text" : "password"}
-                                        value={values.password}
-                                        onChange={handleInputChange}
-                                        error={errors.password}
+                                        onChange={handleOnChange}
                                         InputProps={{ // <-- This is where the toggle button is added.
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -194,28 +170,28 @@ export default function EnterMail() {
                                                 </InputAdornment>
                                             )
                                         }}
-                                        sx={{ marginTop: '0px' }}
+                                        style={{ marginTop: '0px' }}
                                     />
                                 </div>
                             </div>
                         </div>
                         <div className="space-y-2">
                             <div>
-                                <Button
+                                <ColorButton
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    sx={{
-                                        mt: 2,
+                                    style={{
+                                        marginTop: 2,
                                         backgroundColor: '#6738b3',
                                         '&:hover': {
                                             backgroundColor: '#6738b3',
                                         },
                                     }}
                                 >
-                                    Đăng nhập
-                                </Button>
+                                    Nhập mail
+                                </ColorButton>
                             </div>
 
                         </div>

@@ -40,7 +40,6 @@ const Toolbar = () => {
             <Link href="/" className="">
             <BiEdit/>
                 <p>Đăng ký làm việc</p>
-               
             </Link>
            
         </div>

@@ -1,31 +1,12 @@
-import React, { useState, useEffect, forwardRef, useRef } from "react";
+import React from "react";
 
 import TableSpokesman from '../components/table/tablespokesman'
 import { useStateContext } from "../contexts/ContextProvider";
-import { Header, Navbar, Sidebar } from "../components";
-import {Grid} from "@mui/material";
-import adminApi from '../api/adminApi'
-
+import { DocumentTitle, Header, Navbar, Sidebar } from "../components";
+import Grid from "@material-ui/core/Grid";
 // ------------------------------------
-
 const ListSpokesman = () => {
   const { activeMenu } = useStateContext();
-  const [users, setUsers] = useState([]);
-
-  const fetchData = async () => {
-    try {
-      const params = { page: 1, size: 100 }
-      const response = await adminApi.getUser(params)
-      console.log('Fetch products successfully: ', response);
-      setUsers(response.data?.result?.data);
-    } catch (error) {
-      console.log('Failed to fetch product list: ', error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="flex relative ">
       {activeMenu ? (
@@ -47,14 +28,13 @@ const ListSpokesman = () => {
         <div className="fixed md:static bg-white navbar w-full ">
           <Navbar />
         </div>
-
+        <DocumentTitle title="Danh sách người phát ngôn"/>
         <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <Grid style={{ marginBottom: '20px' }}>
             <Header title="Danh sách người phát ngôn" />
           </Grid>
           <TableSpokesman />
         </div>
-
       </div>
     </div>
   );

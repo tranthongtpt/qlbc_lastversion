@@ -1,36 +1,32 @@
-import Illustration from "../data/Illustration.png"
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-// import Button from '@material-ui/core/Button';
-
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { useForm } from "../components/Form/useForm";
-// import { TextField, InputAdornment, IconButton } from "@material-ui/core";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import axios from 'axios';
+import Illustration from "../data/Illustration.png"
 import {
-    Box,
     Button,
-    Checkbox,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    Grid,
     IconButton,
     InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Stack,
     Typography,
-    useMediaQuery,
     TextField
-} from '@mui/material';
-
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { deepPurple, purple } from '@material-ui/core/colors';
+import { DocumentTitle } from "../components";
 export default function Login() {
+    const ColorButton = withStyles((theme) => ({
+        root: {
+            color: theme.palette.getContrastText(deepPurple[500]),
+            backgroundColor: purple[500],
+            '&:hover': {
+                backgroundColor: purple[700],
+            },
+        },
+    }))(Button);
     const navigate = useNavigate();
    
     const MySwal = withReactContent(Swal)
@@ -38,18 +34,21 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
+    const [inputValues, setInputValues] = useState({})
+    const handleOnChange = (e) => {
+        setInputValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const data = JSON.stringify({
-            "usersName": values.usersName,
-            "password": values.password,
+            "usersName": inputValues.usersName,
+            "password": inputValues.password,
         });
 
         const config = {
             method: 'post',
-            url: 'http://10.220.5.65:8090/api/v1/admin/login',
+            url:  `${process.env.REACT_APP_URL}/api/v1/admin/login`,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -69,12 +68,12 @@ export default function Login() {
                         timer: 1000,
                         timerProgressBar: true,
                         icon: 'success',
-                        title: 'success',
+                        title: 'Thành công',
                         iconColor: "#40E0D0	",
                         text: 'Đăng nhập thành công',
                     }).then(() => {
                         localStorage.setItem('token', response.data.result.token);
-                        navigate('/bangdieukhien');
+                        navigate('/danh-sach-nguoi-dung');
                     })
                 } else {
                     MySwal.fire({
@@ -87,12 +86,11 @@ export default function Login() {
                         timer: 1000,
                         timerProgressBar: true,
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Lỗi',
                         iconColor: "#CD5C5C	",
                         text: 'Đăng nhập không thành công',
                     })
                 }
-                console.log(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -100,34 +98,9 @@ export default function Login() {
 
     }
 
-    const initialFValues = {
-        usersName: '',
-        password: ''
-    }
-    const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-        if ('usersName' in fieldValues)
-            temp.usersName = test(fieldValues.usersName) ? "" : "usersName is not valid."
-        if ('password' in fieldValues)
-            temp.password = fieldValues.password.length < 7 ? "" : "Minimum 6 numbers required."
-        setErrors({
-            ...temp
-        })
-
-        if (fieldValues == values)
-            return Object.values(temp).every(x => x == "")
-    }
-    const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-    } = useForm(initialFValues, true, validate);
-
     return (
         <section className="relative w-full h-screen flex bg-blue-200">
+            <DocumentTitle title='Đăng nhập'/>
             <div className="relative w-6/12 h-full">
                 <img src={Illustration} className="absolute top-0 left-0 w-full h-full object-scale-down" />
             </div>
@@ -153,9 +126,7 @@ export default function Login() {
                                     fullWidth
                                     name="usersName"
                                     label="Nhập tài khoản"
-                                    value={values.usersName}
-                                    onChange={handleInputChange}
-                                    error={errors.usersName}
+                                    onChange={handleOnChange}
                                 />
                             </div>
                             <div>
@@ -169,9 +140,7 @@ export default function Login() {
                                         name="password"
                                         label="Nhập mật khẩu"
                                         type={showPassword ? "text" : "password"}
-                                        value={values.password}
-                                        onChange={handleInputChange}
-                                        error={errors.password}
+                                        onChange={handleOnChange}
                                         InputProps={{ // <-- This is where the toggle button is added.
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -190,19 +159,20 @@ export default function Login() {
                             </div>
                         </div>
                         <div className="float-right font-bold text-[#6738b3]">
-                                <Link to="/entermail">
+                                <Link to="/nhap-mail">
                                     Quên mật khẩu
                                 </Link>
                         </div>
+                        
                         <div className="space-y-2">
                             <div>
-                                <Button
+                                <ColorButton
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    sx={{
-                                        mt: 2,
+                                    style={{
+                                        marginTop: '10px',
                                         backgroundColor: '#6738b3',
                                         '&:hover': {
                                             backgroundColor: '#6738b3',
@@ -210,7 +180,7 @@ export default function Login() {
                                     }}
                                 >
                                     Đăng nhập
-                                </Button>
+                                </ColorButton>
                             </div>
 
                         </div>
@@ -219,7 +189,7 @@ export default function Login() {
                             <div className="pt-4">
                                 <Typography
                                     component={Link}
-                                    to="/login"
+                                    to="/dang-nhap"
                                     variant="subtitle1"
                                     sx={{ textDecoration: 'none',textAlign:'center',fontWeight: '500'}}
                                 >
